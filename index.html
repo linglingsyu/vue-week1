@@ -90,7 +90,9 @@
   </body>
 
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script>
+  <script type="module">
+    import { API } from './helper/api.js'
+    const path = 'elsasyu'
     const { createApp } = Vue
     const app = {
       data() {
@@ -142,7 +144,57 @@
               ],
             },
           ],
+          addList: [
+            {
+              title: '草莓莓果夾心圈',
+              category: '甜甜圈',
+              origin_price: 100,
+              price: 300,
+              unit: '個',
+              description:
+                '濃郁的草莓風味，中心填入滑順不膩口的卡士達內餡，帶來滿滿幸福感',
+              content:
+                '濃郁的草莓風味，中心填入滑順不膩口的卡士達內餡，帶來滿滿幸福感！！好吃好吃～',
+              is_enabled: 1,
+              imageUrl:
+                'https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
+              imagesUrl: [
+                'https://images.unsplash.com/photo-1626094309830-abbb0c99da4a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2832&q=80',
+                'https://images.unsplash.com/photo-1559656914-a30970c1affd?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY0fHxkb251dHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
+              ],
+            },
+          ],
         }
+      },
+
+      mounted() {
+        this.checkLogin()
+      },
+      methods: {
+        checkLogin() {
+          API.post('api/user/check')
+            .then(() => {
+              this.getAllData()
+            })
+            .catch((error) => {
+              location.href = './login.html'
+            })
+        },
+        getAllData() {
+          API.get(`api/${path}/admin/products`)
+            .then((res) => {
+              const data = res.data.products
+              console.log(data)
+            })
+            .catch((error) => {
+              alert('error!!')
+              console.dir(error)
+            })
+        },
+        addData() {
+          for (const item of this.products) {
+          }
+        },
       },
       computed: {
         filterData() {
@@ -150,7 +202,6 @@
         },
       },
     }
-
     createApp(app).mount('#app')
   </script>
   <style scoped>
