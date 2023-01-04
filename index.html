@@ -1,212 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link
-      rel="stylesheet"
-      href="	https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-    />
-  </head>
-  <body>
-    <div id="app" class="py-3">
-      <div class="container">
-        <div class="row">
-          <div :class="[!detail.name ? 'col-12' : 'col-6']">
-            <h1>產品列表</h1>
-            <table class="table text-center">
-              <thead>
-                <tr>
-                  <th>產品名稱</th>
-                  <th>原價</th>
-                  <th>售價</th>
-                  <th>是否啟用</th>
-                  <th>查看細節</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in filterData">
-                  <td>{{ item.name}}</td>
-                  <td>{{ item.ori_price}}</td>
-                  <td>{{ item.price}}</td>
-                  <td :class="[item.enable? 'text-success' : 'text-danger']">
-                    {{ item.enable ? '啟用' : '未啟用'}}
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      class="btn btn-primary btn-sm"
-                      @click="detail = item"
-                    >
-                      查看細節
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <p>目前有 {{ filterData.length }} 項產品</p>
-          </div>
-          <div class="col-6">
-            <template v-if="detail.name">
-              <h2>單一產品細節</h2>
-              <div class="card">
-                <div class="text-center py-3">
-                  <img
-                    :src="detail.indexImage"
-                    class="card-img-top w-50"
-                    :alt="detail.type"
-                  />
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">
-                    {{ detail.name }}
-                    <span class="badge bg-primary">{{detail.type}}</span>
-                  </h5>
 
-                  <p class="card-text">商品描述： {{ detail.desc }}</p>
-                  <p class="card-text">商品內容：尺寸：{{ detail.content }}</p>
-                  <p class="card-text">
-                    <span>{{detail.price}}</span>
-                    <span class="text-muted text-decoration-line-through mx-1"
-                      >{{detail.ori_price}}</span
-                    >個 / 元
-                  </p>
-                </div>
-              </div>
-              <div class="my-3">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    http-equiv="X-UA-Compatible"
+    content="IE=edge"
+  />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Document</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+  />
+</head>
+
+<body>
+  <div
+    id="app"
+    class="py-3"
+  >
+
+    <div class="container">
+      <div class="row">
+        <div :class="[!detail.title ? 'col-12' : 'col-6']">
+          <h1>產品列表</h1>
+          <table class="table text-center">
+            <thead>
+              <tr>
+                <th>產品名稱</th>
+                <th>原價</th>
+                <th>售價</th>
+                <th>是否啟用</th>
+                <th>查看細節</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in filterData">
+                <td>{{ item.title}}</td>
+                <td>{{ item.origin_price}}</td>
+                <td>{{ item.price}}</td>
+                <td :class="[item.is_enabled? 'text-success' : 'text-danger']">
+                  {{ item.is_enabled ? '啟用' : '未啟用'}}
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-primary btn-sm"
+                    @click="detail = item"
+                  >
+                    查看細節
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>目前有 {{ filterData.length }} 項產品</p>
+        </div>
+        <div class="col-6">
+          <template v-if="detail.title">
+            <h2>單一產品細節</h2>
+            <div class="card">
+              <div class="text-center py-3">
                 <img
-                  class="image mx-3"
-                  v-for="img in detail.image"
-                  :src="img"
+                  :src="detail.imageUrl"
+                  class="card-img-top w-50"
+                  :alt="detail.category"
                 />
               </div>
-            </template>
-          </div>
+              <div class="card-body">
+                <h5 class="card-title">
+                  {{ detail.title }}
+                  <span class="badge bg-primary">{{detail.category
+                    }}</span>
+                </h5>
+
+                <p class="card-text">商品描述： {{ detail.description }}</p>
+                <p class="card-text">商品內容：尺寸：{{ detail.content }}</p>
+                <p class="card-text">
+                  <span>{{detail.price}}</span>
+                  <span class="text-muted text-decoration-line-through mx-1">{{detail.origin_price}}</span>{{detail.unit}} / 元
+                </p>
+              </div>
+            </div>
+            <div class="my-3">
+              <img
+                class="image mx-3"
+                v-for="img in detail.imagesUrl"
+                :src="img"
+              />
+            </div>
+          </template>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>
 
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <script type="module">
-    import { API } from './helper/api.js'
-    const path = 'elsasyu'
-    const { createApp } = Vue
-    const app = {
-      data() {
-        return {
-          detail: {},
-          products: [
-            {
-              name: '草莓莓果夾心圈',
-              price: 99,
-              ori_price: 150,
-              enable: true,
-              desc: '濃郁的草莓風味，中心填入滑順不膩口的卡士達內餡，帶來滿滿幸福感！',
-              type: '甜甜圈',
-              content: '14x14cm',
-              indexImage:
-                'https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
-              image: [
-                'https://images.unsplash.com/photo-1626094309830-abbb0c99da4a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2832&q=80',
-                'https://images.unsplash.com/photo-1559656914-a30970c1affd?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY0fHxkb251dHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
-              ],
-            },
-            {
-              name: '蜂蜜檸檬蛋糕',
-              price: 900,
-              ori_price: 1000,
-              enable: true,
-              desc: '蜜蜂蜜蛋糕，夾層夾上酸酸甜甜的檸檬餡，清爽可口的滋味讓人口水直流！',
-              type: '蛋糕',
-              content: '6寸',
-              indexImage:
-                'https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1001&q=80',
-              image: [
-                'https://images.unsplash.com/photo-1618888007540-2bdead974bbb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=987&q=80',
-              ],
-            },
-            {
-              name: '暗黑千層',
-              price: 600,
-              ori_price: 700,
-              enable: true,
-              desc: '法式煎薄餅加上濃郁可可醬，呈現經典的美味及口感。',
-              type: '蛋糕',
-              content: '6寸',
-              indexImage:
-                'https://images.unsplash.com/photo-1505253149613-112d21d9f6a9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDZ8fGNha2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
-              image: [
-                'https://images.unsplash.com/flagged/photo-1557234985-425e10c9d7f1?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTA5fHxjYWtlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
-                'https://images.unsplash.com/photo-1540337706094-da10342c93d8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDR8fGNha2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
-              ],
-            },
-          ],
-          addList: [
-            {
-              title: '草莓莓果夾心圈',
-              category: '甜甜圈',
-              origin_price: 100,
-              price: 300,
-              unit: '個',
-              description:
-                '濃郁的草莓風味，中心填入滑順不膩口的卡士達內餡，帶來滿滿幸福感',
-              content:
-                '濃郁的草莓風味，中心填入滑順不膩口的卡士達內餡，帶來滿滿幸福感！！好吃好吃～',
-              is_enabled: 1,
-              imageUrl:
-                'https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
-              imagesUrl: [
-                'https://images.unsplash.com/photo-1626094309830-abbb0c99da4a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2832&q=80',
-                'https://images.unsplash.com/photo-1559656914-a30970c1affd?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY0fHxkb251dHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
-              ],
-            },
-          ],
-        }
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script type="module">
+  import { API } from './helper/api.js'
+  const path = 'elsasyu'
+  const { createApp } = Vue
+  const app = {
+    data() {
+      return {
+        detail: {},
+        products: [
+          // {
+          //   name: '草莓莓果夾心圈',
+          //   price: 99,
+          //   ori_price: 150,
+          //   enable: true,
+          //   desc: '濃郁的草莓風味，中心填入滑順不膩口的卡士達內餡，帶來滿滿幸福感！',
+          //   type: '甜甜圈',
+          //   content: '14x14cm',
+          //   indexImage:
+          //     'https://images.unsplash.com/photo-1583182332473-b31ba08929c8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NzR8fGRvbnV0fGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
+          //   image: [
+          //     'https://images.unsplash.com/photo-1626094309830-abbb0c99da4a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2832&q=80',
+          //     'https://images.unsplash.com/photo-1559656914-a30970c1affd?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTY0fHxkb251dHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
+          //   ],
+          // },
+          // {
+          //   name: '蜂蜜檸檬蛋糕',
+          //   price: 900,
+          //   ori_price: 1000,
+          //   enable: true,
+          //   desc: '蜜蜂蜜蛋糕，夾層夾上酸酸甜甜的檸檬餡，清爽可口的滋味讓人口水直流！',
+          //   type: '蛋糕',
+          //   content: '6寸',
+          //   indexImage:
+          //     'https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1001&q=80',
+          //   image: [
+          //     'https://images.unsplash.com/photo-1618888007540-2bdead974bbb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=987&q=80',
+          //   ],
+          // },
+          // {
+          //   name: '暗黑千層',
+          //   price: 600,
+          //   ori_price: 700,
+          //   enable: true,
+          //   desc: '法式煎薄餅加上濃郁可可醬，呈現經典的美味及口感。',
+          //   type: '蛋糕',
+          //   content: '6寸',
+          //   indexImage:
+          //     'https://images.unsplash.com/photo-1505253149613-112d21d9f6a9?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDZ8fGNha2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
+          //   image: [
+          //     'https://images.unsplash.com/flagged/photo-1557234985-425e10c9d7f1?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTA5fHxjYWtlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
+          //     'https://images.unsplash.com/photo-1540337706094-da10342c93d8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDR8fGNha2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60',
+          //   ],
+          // },
+        ]
+      }
+    },
+    mounted() {
+      this.checkLogin()
+    },
+    methods: {
+      checkLogin() {
+        API.post('api/user/check')
+          .then(() => {
+            this.getAllData()
+          })
+          .catch((error) => {
+            location.href = './login.html'
+          })
       },
+      getAllData() {
+        API.get(`api/${path}/admin/products`)
+          .then((res) => {
+            const data = res.data.products
+            this.products = data
+            console.log(data)
+          })
+          .catch((error) => {
+            alert('error!!')
+            console.dir(error)
+          })
+      },
+      // addData() {
+      //   for (const item of this.addList) {
+      //     API.post(`api/${path}/admin/product`, { data: item })
+      //       .then((res) => {
+      //         // const data = res.data.products
+      //         console.log(res)
+      //       })
+      //       .catch((error) => {
+      //         alert('error!!')
+      //         console.dir(error)
+      //       })
+      //   }
+      // },
 
-      mounted() {
-        this.checkLogin()
+    },
+    computed: {
+      filterData() {
+        return this.products.filter((item) => item.is_enabled)
       },
-      methods: {
-        checkLogin() {
-          API.post('api/user/check')
-            .then(() => {
-              this.getAllData()
-            })
-            .catch((error) => {
-              location.href = './login.html'
-            })
-        },
-        getAllData() {
-          API.get(`api/${path}/admin/products`)
-            .then((res) => {
-              const data = res.data.products
-              console.log(data)
-            })
-            .catch((error) => {
-              alert('error!!')
-              console.dir(error)
-            })
-        },
-        addData() {
-          for (const item of this.products) {
-          }
-        },
-      },
-      computed: {
-        filterData() {
-          return this.products.filter((item) => item.enable)
-        },
-      },
-    }
-    createApp(app).mount('#app')
-  </script>
-  <style scoped>
-    .image {
-      height: 150px;
-    }
-  </style>
+    },
+  }
+  createApp(app).mount('#app')
+</script>
+<style scoped>
+  .image {
+    height: 150px;
+  }
+</style>
+
 </html>
