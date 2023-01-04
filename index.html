@@ -82,7 +82,9 @@
                 <p class="card-text">商品內容：尺寸：{{ detail.content }}</p>
                 <p class="card-text">
                   <span>{{detail.price}}</span>
-                  <span class="text-muted text-decoration-line-through mx-1">{{detail.origin_price}}</span>{{detail.unit}} / 元
+                  <span
+                    class="text-muted text-decoration-line-through mx-1">{{detail.origin_price}}</span>{{detail.unit}} /
+                  元
                 </p>
               </div>
             </div>
@@ -157,8 +159,10 @@
         ]
       }
     },
+    created() { this.checkLogin() }
+    ,
     mounted() {
-      this.checkLogin()
+
     },
     methods: {
       checkLogin() {
